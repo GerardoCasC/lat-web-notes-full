@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
+import dns from 'dns';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -9,19 +9,28 @@ import authRoutes from './routes/auth.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
-
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
-
 app.use(express.json());
+app.get('/health', (_req, res) => {
+  res.status(200).json({
+    success: true,
+    data: { status: 'ok' },
+    error: null,
+  });
+});
 app.use(noteRoutes);
 app.use(authRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
-
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 mongoose
-  .connect(process.env.MONGO_URI!)
+  .connect(
+    'mongodb+srv://gerardojccastro:BOiNtfXdqkonpyYv@cluster0.4ytfmmx.mongodb.net/notes?appName=Cluster0',
+    { maxPoolSize: 10 },
+  )
   .then(() => {
     console.log('Conectado a MongoDB');
     app.listen(PORT, () => {
