@@ -16,7 +16,7 @@ app.use(express.json());
 app.get('/health', (_req, res) => {
   res.status(200).json({
     success: true,
-    data: { status: 'ok' },
+    data: { status: process.env.CLIENT_ORIGIN },
     error: null,
   });
 });
