@@ -41,7 +41,6 @@ export function loginUser(
   email: string,
   password: string,
 ): Promise<{ token: string; user: CurrentUser }> {
-  console.log(API_URL);
   return request<{ token: string; user: CurrentUser }>('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
