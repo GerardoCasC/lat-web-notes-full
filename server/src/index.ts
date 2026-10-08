@@ -27,10 +27,7 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 mongoose
-  .connect(
-    'mongodb+srv://gerardojccastro:BOiNtfXdqkonpyYv@cluster0.4ytfmmx.mongodb.net/notes?appName=Cluster0',
-    { maxPoolSize: 10 },
-  )
+  .connect(process.env.MONGO_URI!, { maxPoolSize: 10 })
   .then(() => {
     console.log('Conectado a MongoDB');
     app.listen(PORT, () => {

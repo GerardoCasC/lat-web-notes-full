@@ -1,6 +1,6 @@
 import type { CurrentUser, Note } from '../types';
 
-const API_URL = import.meta.env.API_URL ?? 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function authHeader(): Record<string, string> {
   const token = localStorage.getItem('auth-token');
@@ -41,6 +41,7 @@ export function loginUser(
   email: string,
   password: string,
 ): Promise<{ token: string; user: CurrentUser }> {
+  console.log(API_URL);
   return request<{ token: string; user: CurrentUser }>('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email, password }),
